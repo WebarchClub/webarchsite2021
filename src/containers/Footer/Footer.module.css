@@ -1,5 +1,5 @@
 .footerDiv {
-    background: var(--bg-plain);
+    background: red;
     color: white;
     font-size: 1.8rem;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -198,6 +198,10 @@ h3 {
     }
     .msgContainer p {
         font-size: 1.6rem;
+    }
+    .footerDiv {
+        position: absolute;
+        bottom: 0;
     }
 } 
 
