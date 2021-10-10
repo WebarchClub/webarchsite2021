@@ -1,58 +1,33 @@
 import React from "react";
-import {useState} from "react";
-import Slider from "react-slick";
-import image1 from "../../files/logo.png";
-import "./Clients.css"
-import { FaArrowRight, FaArrowLeft} from "react-icons/fa";
+import { Container, Row, Col,Hidden } from 'react-grid-system';
+import './Clients.css';
 
-const images = [image1, image1, image1, image1]
+const Clients = () => {
 
-function Clients({alt}){
+  return (
+<Container fluid>
 
-  const NextArrow = ({onClick}) => {
-    return(
-      <div className="arrow next" onClick={onClick}>
-        <FaArrowRight/>
-      </div>
-    )
-  }
+  <Row align="stretch" style={{ height: '220px' }} debug>
+    <Col debug>1 of 3</Col>
+    <Col debug>2 of 3</Col>
+    <Col debug>3 of 3</Col>
+    <Hidden sm xs><Col debug>3 of 3</Col></Hidden>
+  </Row>
 
-  const PrevArrow = ({onClick}) => {
-    return(
-      <div className="arrow prev" onClick={onClick}>
-        <FaArrowLeft/>
-      </div>
-    )
-  }
-
-  const [imageIndex, setImageIndex] = useState(0)
-
-  const settings = {
-    infinite:true,
-    lazyload:true,
-    speed:700,
-    slidesToShow:3,
-    centerMode:true,
-    autoplay:true,
-    centerPadding:0,
-    nextArrow:<NextArrow/>,
-    prevArrow:<PrevArrow/>,
-    beforeChange: (current,next) => setImageIndex(next)
-  };
-
-  return(
-    <div className={alt ? "clients alt" : "clients"}>
-      <div className="center">
-     <Slider {...settings}>
-       {images.map((img, idx)=>(
-         <div className={idx === imageIndex ? 'slide activeSlide' : 'slide'} key={idx}>
-           <img src={img} alt={img}/>
-           </div>
-       ))}
-     </Slider>
-     </div>
-    </div>
-  );
-}
-
+  <Row align="stretch" style={{ height: '220px' }} debug>
+    <Col debug>1 of 3</Col>
+    <Col debug>2 of 3</Col>
+    <Col debug>3 of 3</Col>
+    <Hidden sm xs><Col debug>3 of 3</Col>
+    <Col debug>3 of 3</Col></Hidden>
+  </Row>
+<Hidden xxl xl lg md>
+  <Row align="stretch" style={{ height: '220px' }} debug>
+    <Col debug>1 of 3</Col>
+    <Col debug>2 of 3</Col>
+    <Col debug>3 of 3</Col>
+  </Row>
+  </Hidden>
+</Container>
+  )}
 export default Clients;
