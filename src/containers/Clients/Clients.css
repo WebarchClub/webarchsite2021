@@ -1,11 +1,20 @@
 
-
 .clients{
     text-align: center;
     margin:0 auto;
-    /* margin-top: 15em; */
     justify-content: center;
-    height:50vh;
+    max-height:70vh;
     max-width:100%;
     position: relative;
+    justify-content: space-between;
+    background-color:#001c44;
+}
+img{
+    display:flex;
+}
+Col{
+    box-shadow: 10px 10px 10px 10px #001c44;
+}
+img:hover{ 
+    transform:scale(1.2);
 }
