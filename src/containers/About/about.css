@@ -34,6 +34,8 @@
 .about-box .about-box-container {
   position: relative;
   margin-bottom: 2.5rem;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 .about-box .about-box-container .about-box-icon {
   position: absolute;
