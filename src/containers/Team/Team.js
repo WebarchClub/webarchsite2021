@@ -1,9 +1,93 @@
 import "./Team.css"
 import Navbar from "../Navbar/NavBar";
-import Footer from "../Footer/Footer";
-
+import { db } from "../../firebase";
+import { useEffect, useState } from "react";
+import { collection, query, getDocs } from "@firebase/firestore";
+import { useLocation } from "react-router";
 
 const Team = () => {
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if(location.hash){
+        let elem = document.getElementById(location.hash.slice(1))
+        if (elem) {
+            elem.scrollIntoView({behavior: "smooth"})
+        }
+        }else{
+        window.scrollTo({top:0,left:0, behavior: "smooth"})
+        }
+    }, [location])
+
+    const range = (start, end) => {
+        return Array(Number(end) - Number(start) + 1).fill().map((_, idx) => String(Number(start) + idx))
+    }
+
+    const [teamMembers, setTeamMembers] = useState([]);
+    const teamIds = range(process.env.REACT_APP_MEMBERS_START, process.env.REACT_APP_MEMBERS_END);
+
+    useEffect(() => {
+        const q = query(collection(db, "team"));
+        var members = [];
+        getDocs(q).then(data => {
+            data.forEach(m => {
+                if(teamIds.includes(m.data().order)){
+                    members.push(m.data())
+                }
+            });
+        })
+        .then(() => {
+            members.sort(function(a, b) {
+                var keyA = Number(a.order),
+                  keyB = Number(b.order);
+                // Compare the 2 dates
+                if (keyA < keyB) return -1;
+                if (keyA > keyB) return 1;
+                return 0;
+              });
+            setTeamMembers(members);
+        })
+        .catch(err => console.log(err));
+        // eslint-disable-next-line
+    }, [])
+
+    let lis = teamMembers.map((m,idx) => (
+        <li key={idx} className="transition">
+            <div className="wrapper">
+                {" "}
+                
+
+                <div className="team-img">
+                    <img alt="team" className="responsive-img" src={m.photo} />
+                </div>
+                <h3 className="transition">
+                    {m.name} <em>{m.role}</em>
+                </h3>
+                <span className="transition">
+                    <div className="text-wrapper transition">
+                        <ul className="social">
+                            <li className="transition">
+                                <a href={m.insta}>
+                                    <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
+                                </a>
+                            </li>
+                            <li className="transition">
+                                <a href={m.git}>
+                                    <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
+                                </a>
+                            </li>
+                            <li className="transition">
+                                <a href={m.fb}>
+                                    <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </span>{" "}
+            </div>
+        </li>
+    ));
 
     return (
         <div className="Team">
@@ -17,568 +101,9 @@ const Team = () => {
                 </div>
 
                 <ul className="five">
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/5aee389b3c3a531e6245ae76/1531792846005-MYGZAOI0L93I3YJWHB6W/D75_5697-Edit.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/52db0749e4b02995f7e07698/1533311993915-EPUJXKSERN4Y4LA9NCDI/JJ_headshot.jpg?format=1000w" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/5aee389b3c3a531e6245ae76/1531792846005-MYGZAOI0L93I3YJWHB6W/D75_5697-Edit.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/52db0749e4b02995f7e07698/1533311993915-EPUJXKSERN4Y4LA9NCDI/JJ_headshot.jpg?format=1000w" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/52db0749e4b02995f7e07698/1533311993915-EPUJXKSERN4Y4LA9NCDI/JJ_headshot.jpg?format=1000w" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/52db0749e4b02995f7e07698/1533311993915-EPUJXKSERN4Y4LA9NCDI/JJ_headshot.jpg?format=1000w" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-                    <li className="transition">
-                        <div className="wrapper">
-                            {" "}
-                            
-
-                            <img alt="team" className="responsive-img" src="https://images.squarespace-cdn.com/content/v1/56bfec52e707eb206946af06/1614108201592-K4EMENAYMRT1V0T0RRE5/Anish%2BKhare_25%2B%2528002%2529.jpg" />
-                            <h3 className="transition">
-                                Lucy Copycat <em>CEO &amp; Founder</em>
-                            </h3>
-                            <span className="transition">
-                                <div className="text-wrapper transition">
-                                    <ul className="social">
-                                        <li className="transition">
-                                            <a href="https://www.facebook.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/128/2111/2111463.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/1051/1051326.png" />
-                                            </a>
-                                        </li>
-                                        <li className="transition">
-                                            <a href="https://www.youtube.com">
-                                                <img alt="team" src="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </span>{" "}
-                        </div>
-                    </li>
-
-
-
+                    {lis}
                 </ul>
             </div>
-            <Footer />
         </div>
 
     );

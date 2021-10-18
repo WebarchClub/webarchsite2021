@@ -46,12 +46,12 @@ const Card = ({ card }) => {
         <div className="name">
           <h2>{card.name}</h2> <p>lorem ipsum</p>
         </div>
-        <div className="quote">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci amet expedita iusto sequi sapiente</div>
+        <div className="quote">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci amet expedita iusto sequi sapiente Lorem ipsum dolor sit amet.</div>
       </div>
     </div>
   );
 };
-const Testimonials = (props) => {
+const Testimonials = ({alt}) => {
   let flkty;
   let [carouselIndex, setCarouselIndex] = useState(null);
 
@@ -62,7 +62,6 @@ const Testimonials = (props) => {
 
   useEffect(() => {
     if (flkty) {
-      console.log("this ran");
       flkty.on("settle", () => {
         console.log(`current index is ${flkty.selectedIndex}`);
       });
@@ -71,12 +70,12 @@ const Testimonials = (props) => {
         handleChange(index);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [carouselIndex]);
 
   return (
-    <div className="container-testimonials">
-      <Flickity flickityRef={(c) => (flkty = c)} options={{ initialIndex: 1 }}>
+    <div className={alt ? "container-testimonials alt" : "container-testimonials"}>
+      <Flickity flickityRef={(c) => (flkty = c)} options={{ initialIndex: 2 }}>
         {slideData.map((card, i) => {
           return <Card card={card} key={i} />;
         })}

@@ -1,9 +1,20 @@
 import classes from "./Footer.module.css";
 import footerImg from "../../files/footer.svg";
+import { Link } from "react-router-dom";
+import $ from "jquery";
 
-const Footer = () => {
+const Footer = ({alt}) => {
+
+  $(document).on('focus', 'input, textarea', function() {
+    $("footer").hide();
+  });
+
+  $(document).on('blur', 'input, textarea', function() {
+    $("footer").show();
+  });
+
   return (
-    <div className={classes.footerDiv}>
+    <footer className={alt ? classes.footerDiv+" alt" : classes.footerDiv}>
       <div className={classes.footerContainer}>
         <div className={classes.illustration}>
           <img src={footerImg} alt="illustration" />
@@ -12,10 +23,10 @@ const Footer = () => {
           <div className={classes.exploreContainer}>
             <ul className={classes.explore}>
               <h3>Explore</h3>
-              <li>Home</li>
-              <li>AboutUs</li>
-              <li>Team</li>
-              <li>ContactUs</li>
+              <li><Link to="/" >Home</Link></li>
+              <li><Link to="/#About" >About Us</Link></li>
+              <li><Link to="/team" >Team</Link></li>
+              <li><Link to="/#Contact" >ContactUs</Link></li>
             </ul>
             <ul className={classes.contact}>
               <h3>Reach Us</h3>
@@ -26,15 +37,9 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="tele:1234567891">
+                <a href="tele:9549954599">
                   <i className="fas fa-phone-alt"></i>
-                  Nikola Tesla
-                </a>
-              </li>
-              <li>
-                <a href="tele:1234567891">
-                  <i className="fas fa-phone-alt"></i>
-                  Ed Snowden
+                  Divij Gupta
                 </a>
               </li>
             </ul>
@@ -44,7 +49,7 @@ const Footer = () => {
                 <li>
                   <a
                     className={classes.insta}
-                    href="https://github.com/WebarchClub"
+                    href="https://www.instagram.com/webarchclub"
                   >
                     <i className={"fab fa-instagram"}></i>
                   </a>
@@ -52,14 +57,9 @@ const Footer = () => {
                 <li>
                   <a
                     className={classes.linkedin}
-                    href="https://github.com/WebarchClub"
+                    href="https://www.linkedin.com/company/webarchclub/"
                   >
                     <i className={"fab fa-linkedin"}></i>
-                  </a>
-                </li>
-                <li>
-                  <a className={classes.discord} href="www.google.com">
-                    <i className={"fab fa-discord"}></i>
                   </a>
                 </li>
                 <li>
@@ -80,7 +80,7 @@ const Footer = () => {
           Developed With <i className="fas fa-heart"></i> By Team Webarch{" "}
         </p>
       </div>
-    </div>
+    </footer>
   );
 };
 
