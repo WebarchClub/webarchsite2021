@@ -1,32 +1,41 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Projects.css";
 import { Row, Col } from "react-bootstrap";
 import GithubIcon from "../../files/githubicon.svg";
 import LinkIcon from "../../files/linkicon.svg";
 
 const ProjectItem = ({ project }) => {
-  const {
+  let {
     id,
     title,
     description,
-    // image,
+    image,
     tech,
     githubLink,
     liveDemo,
     contributors,
   } = project;
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const renderItem = (idx) => {
     if (idx % 2 === 1) {
+      image = image !== "" ? image : "https://s3-ap-south-1.amazonaws.com/static.awfis.com/wp-content/uploads/2017/07/07184649/ProjectManagement.jpg";
       return (
         <>
-          <Col className="project-item-left">
+          <Col className="project-item-left smooth-img-wrapper">
             {/* <a href={liveDemo} className="project-link"></a> */}
             <img
-              src="https://s3-ap-south-1.amazonaws.com/static.awfis.com/wp-content/uploads/2017/07/07184649/ProjectManagement.jpg"
-              className="project-image"
+              src={image}
+              className={`project-image smooth-img img-${imageLoaded ? 'visible' : 'hidden'}`}
+              onLoad={()=> setImageLoaded(true)}
               alt="project"
             />
+            {!imageLoaded && (
+                <div className="smooth-preloader">
+                    <span className="smooth-loader"></span>
+                </div>
+            )}
           </Col>
           <Col className="project-item-right">
             <div className="project-details">
@@ -45,18 +54,19 @@ const ProjectItem = ({ project }) => {
                 ))}
               </div>
               <div className="project-item-icons flex-end">
-                <a href={githubLink} target="__blank">
+                {(githubLink !== "") && (<a href={githubLink} target="__blank">
                   <img alt="icon" src={GithubIcon} className="mr-1" />
-                </a>
-                <a href={liveDemo} target="__blank">
+                </a>)}
+                {(liveDemo !== "") && (<a href={liveDemo} target="__blank">
                   <img alt="icon" src={LinkIcon} />
-                </a>
+                </a>)}
               </div>
             </div>
           </Col>
         </>
       );
     } else {
+      image = image !== "" ? image : "https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png";
       return (
         <>
           <Col className="project-item-left">
@@ -76,23 +86,29 @@ const ProjectItem = ({ project }) => {
                 ))}
               </div>
               <div className="project-item-icons">
-                <a href={githubLink} target="__blank">
+                {(githubLink !== "") && (<a href={githubLink} target="__blank">
                   <img alt="icon" src={GithubIcon} className="mr-1" />
-                </a>
-                <a href={liveDemo} target="__blank">
+                </a>)}
+                {(liveDemo !== "") && (<a href={liveDemo} target="__blank">
                   <img alt="icon" src={LinkIcon} />
-                </a>
+                </a>)}
               </div>
             </div>
           </Col>
           <Col className="project-item-right">
             {/* <a href={liveDemo} className="project-link"></a> */}
             <img
-              src="https://www.publichealthnotes.com/wp-content/uploads/2020/03/project-planning-header@2x.png"
-              className="project-image"
+              src={image}
+              className={`project-image smooth-img img-${imageLoaded ? 'visible' : 'hidden'}`}
+              onLoad={()=> setImageLoaded(true)}
               link="true"
               alt="project"
             />
+            {!imageLoaded && (
+                <div className="smooth-preloader">
+                    <span className="smooth-loader"></span>
+                </div>
+            )}
           </Col>
         </>
       );

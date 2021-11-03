@@ -1,5 +1,5 @@
 import classes from "./Footer.module.css";
-import footerImg from "../../files/footer.svg";
+import footerImg from "../../files/footer/footer.svg";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 
@@ -31,15 +31,15 @@ const Footer = ({alt}) => {
             <ul className={classes.contact}>
               <h3>Reach Us</h3>
               <li>
-                <a href="mailto:">
+                <a href="mailto:webarchclub@gmail.com">
                   <i className="fas fa-envelope"></i>
-                  webarchsrm@gmail.com
+                  webarchclub@gmail.com
                 </a>
               </li>
               <li>
                 <a href="tele:9549954599">
                   <i className="fas fa-phone-alt"></i>
-                  Divij Gupta
+                  +91 9549954599
                 </a>
               </li>
             </ul>

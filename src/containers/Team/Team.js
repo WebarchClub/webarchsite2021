@@ -4,10 +4,12 @@ import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { collection, query, getDocs } from "@firebase/firestore";
 import { useLocation } from "react-router";
+import Header from "../Header/Header";
 
 const Team = () => {
 
     const location = useLocation();
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     useEffect(() => {
         if(location.hash){
@@ -58,8 +60,18 @@ const Team = () => {
                 {" "}
                 
 
-                <div className="team-img">
-                    <img alt="team" className="responsive-img" src={m.photo} />
+                <div className="team-img smooth-img-wrapper">
+                    <img 
+                    alt={m.name} 
+                    className={`responsive-img smooth-img img-${imageLoaded ? 'visible' : 'hidden'}`} 
+                    src={m.photo} 
+                    onLoad={()=> setImageLoaded(true)}
+                    />
+                    {!imageLoaded && (
+                        <div className="smooth-preloader">
+                            <span className="smooth-loader"></span>
+                        </div>
+                    )}
                 </div>
                 <h3 className="transition">
                     {m.name} <em>{m.role}</em>
@@ -93,7 +105,8 @@ const Team = () => {
         <div className="Team">
             <Navbar isHome={false} />
             <div className="team-body">
-                <p className="team-page-heading">Meet The Team</p>
+                <Header title="Meet The Team" id="Team" />
+                {/* <p className="team-page-heading">Meet The Team</p> */}
                 <div className="hero">
                     <h1 className="tagline">
                         Bringing out the best in each other!
