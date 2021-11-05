@@ -25,13 +25,14 @@ const useStyles = makeStyles({
         },
     },
     dialogButton: {
-        backgroundColor: '#00e8ff',
+        backgroundColor: '#00e8ff !important',
         color: '#000 !important',
         '&:hover': {
             backgroundColor: '#026ba3',
             color: '#fff',
         },
-        fontSize: '1.3rem !important'
+        fontSize: '1.3rem !important',
+        fontWeight: 'bold !important'
     },
     dialogTitle: {
         backgroundColor: '#00e8ff',
@@ -88,34 +89,60 @@ const ContactUs = ({ alt }) => {
     const handleSubmit = (e) => {
         $(e.target).find("#btn").attr("disabled", true);
         $(e.target).find("#btn").text("Sending");
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode({ "form-name": "contact", ...formData })
-        })
-            .then(res => {
-                console.log(res);
-                if(res.status === 200){
-                    setDialogTitleText("Thank You For Contacting Webarch!");
-                    setDialogMessage("Your message has been sent successfully");
-                    handleOpen();
-                }else{
-                    setDialogTitleText("Oops! Something Went Wrong");
-                    setDialogMessage("We encountered an error, Please try after some time");
-                    handleOpen();
-                }
-                $(e.target).find("#btn").attr("disabled", false);
-                $(e.target).find("#btn").text("Send");
-            })
-            .catch((error) => {
-                console.log(error)
-                setDialogTitleText("Oops! Something Went Wrong");
-                setDialogMessage("We encountered an error. Please try after some time");
+        if(formData.name.trim() && formData.email.trim() && formData.message.trim()){
+            var emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if(formData.email.match(emailRegex)){
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: encode({ "form-name": "contact", ...formData })
+                })
+                    .then(res => {
+                        console.log(res);
+                        if(res.status === 200){
+                            setDialogTitleText("Thank You For Contacting Webarch!");
+                            setDialogMessage("Your message has been sent successfully");
+                            handleOpen();
+                        }else{
+                            setDialogTitleText("Oops! Something Went Wrong");
+                            setDialogMessage("We encountered an error, Please try after some time");
+                            handleOpen();
+                        }
+                        $(e.target).find("#btn").attr("disabled", false);
+                        $(e.target).find("#btn").text("Send");
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setDialogTitleText("Oops! Something Went Wrong");
+                        setDialogMessage("We encountered an error. Please try after some time");
+                        handleOpen();
+                        $(e.target).find("#btn").attr("disabled", false);
+                        $(e.target).find("#btn").text("Send");
+                    });
+            }else{
+                setDialogTitleText("You Have Not Entered Valid Email");
+                setDialogMessage("Please enter a valid email address");
                 handleOpen();
                 $(e.target).find("#btn").attr("disabled", false);
                 $(e.target).find("#btn").text("Send");
-            });
-
+            }
+        }else{
+            var emptyFields = [];
+            if(!formData.name.trim()){
+                emptyFields.push("Name")
+            }
+            if(!formData.email.trim()){
+                emptyFields.push("Email")
+            }
+            if(!formData.message.trim()){
+                emptyFields.push("Message")
+            }
+            setDialogTitleText("Empty Field Detected");
+            setDialogMessage(`Please make a valid entry in ${emptyFields.join(" , ")}`);
+            handleOpen();
+            $(e.target).find("#btn").attr("disabled", false);
+            $(e.target).find("#btn").text("Send");
+        }
         e.preventDefault();
     }
 
