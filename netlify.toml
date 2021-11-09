@@ -1,0 +1,16 @@
+[[redirects]]
+  from = "/tiny"
+  to = "https://webarch-shortener.herokuapp.com"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/tiny/*"
+  to = "https://webarch-shortener.herokuapp.com/shorten/:shortid"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
