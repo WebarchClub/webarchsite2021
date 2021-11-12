@@ -39,8 +39,6 @@ const Landing = () => {
     } else {
       sessionStorage.setItem('isAnimated', true)
     }
-
-    console.log(sessionStorage.getItem('isAnimated'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionStorage.getItem('isAnimated')])
 

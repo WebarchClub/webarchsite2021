@@ -98,7 +98,6 @@ const ContactUs = ({ alt }) => {
                     body: encode({ "form-name": "contact", ...formData })
                 })
                     .then(res => {
-                        console.log(res);
                         if(res.status === 200){
                             setDialogTitleText("Thank You For Contacting Webarch!");
                             setDialogMessage("Your message has been sent successfully");
@@ -112,7 +111,6 @@ const ContactUs = ({ alt }) => {
                         $(e.target).find("#btn").text("Send");
                     })
                     .catch((error) => {
-                        console.log(error)
                         setDialogTitleText("Oops! Something Went Wrong");
                         setDialogMessage("We encountered an error. Please try after some time");
                         handleOpen();

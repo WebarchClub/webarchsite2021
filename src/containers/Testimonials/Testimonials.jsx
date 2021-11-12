@@ -83,13 +83,12 @@ const Testimonials = ({ alt }) => {
 
   const handleChange = (index) => {
     setCarouselIndex(index); // Not working
-    console.log({ carouselIndex, index });
   };
 
   useEffect(() => {
     if (flkty) {
       flkty.on("settle", () => {
-        console.log(`current index is ${flkty.selectedIndex}`);
+        // print index in dev
       });
 
       flkty.on("change", (index) => {
