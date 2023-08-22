@@ -37,9 +37,9 @@ const Footer = ({alt}) => {
                 </a>
               </li>
               <li>
-                <a href="tele:9549954599">
+                <a href="tele:7006139535">
                   <i className="fas fa-phone-alt"></i>
-                  +91 9549954599
+                  +91 7006139535
                 </a>
               </li>
             </ul>
